@@ -25,11 +25,8 @@ for i = 1:kfold
     Gts = Xt(ind == i, end);
     Gtr = Xt(ind ~= i, end);
 
-    %use some kernel ...
-    % and train svm
+    %
     
-    
-    %test svm
     curerr = 0;
     
     err = err + curerr;
