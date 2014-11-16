@@ -13,7 +13,11 @@ Xt = training;
 ind = crossvalind('Kfold', size(Xt,1), kfold);
 err = 0;
 
-SVMModel = fitcsvm(Xt(:,1:end-1), Xt(:,end),'Standardize',true);
+%standard matlab svm
+svm = fitcsvm(Xt(:,1:end-1), Xt(:,end),'Standardize',true);
+
+cv = crossval(svm);
+kfoldLoss(cv)
 
 return
 
