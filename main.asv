@@ -9,43 +9,52 @@ kfold = 10;
 
 %% 
 Xt = training;
-
 ind = crossvalind('Kfold', size(Xt,1), kfold);
 err = 0;
 
-SVMModel = fitcsvm(Xt(:,1:end-1), Xt(:,end),'Standardize',true);
+% standard matlab svm
+% standardize
+% define kernerl function
+% pass cost matrix
+% cross validation on/off
+costM = [0,5;1,0];
+svm = fitcsvm(Xt(:,1:end-1), Xt(:,end),'Standardize',true,'KernelFunction','polynomial','Cost',costM);
 
+cv = crossval(svm);
+kfoldLoss(cv)
 
+% Predict training data
+[labels,Score] = predict(svm,X(:,1-end-1));
+CE = compCE(Xt(:,e
 
-return
+% Predict validation data
+[labels,Score] = predict(svm,validation);
 
 % do kfold crossvalidation
-for i = 1:kfold
-    Xts = Xt(ind == i, 1:end-1);
-    Xtr = Xt(ind ~= i, 1:end-1);
+% for i = 1:kfold
+%     Xts = Xt(ind == i, 1:end-1);
+%     Xtr = Xt(ind ~= i, 1:end-1);
+% 
+%     Gts = Xt(ind == i, end);
+%     Gtr = Xt(ind ~= i, end);
+% 
+%     %use some kernel ...
+%     % and train svm
+%     
+%     
+%     %test svm
+%     curerr = 0;
+%     
+%     err = err + curerr;
+% end
 
-    Gts = Xt(ind == i, end);
-    Gtr = Xt(ind ~= i, end);
 
-    %use some kernel ...
-    % and train svm
-    
-    
-    %test svm
-    curerr = 0;
-    
-    err = err + curerr;
-end
-
-
-
-return
 %% test on validation set
 
 preddata = 0;
 
 %% write to csv file for submission
-csvwrite('validationsetresult.csv', preddata);
+csvwrite('data/validationsetresult.csv', labels);
 
 
 %% test on test set
