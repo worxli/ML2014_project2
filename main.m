@@ -5,66 +5,53 @@ training = csvread('data/training.csv');
 testdata = csvread('data/testing.csv');
 validation = csvread('data/validation.csv');
 
-kfold = 10;
 
-%% 
-Xt = training;
+%% define data
+Xt = training(:,1:end-1);
+Y = training(:,end);
 
+
+%% Define kernel functions and other parameters for svm
 % standard matlab svm
 % standardize
-% define kernerl function
+% define kernel function
 % pass cost matrix
 % cross validation on/off
-
+kernels = 'rbf';
 costM = [0,5;1,0];
-svm = fitcsvm(Xt(:,1:end-1), Xt(:,end),'Standardize',true,'KernelFunction','rbf','Cost',costM);
 
-% classification loss for observations not used for training (out of
-% sample classification)
 
+%% for all kernel functions do cross validation,
+% choose the one with lowest classification error
+% ATTENTION: maybe it's better to use the built in crossval(svm) function - (I think it doesn't matter)
+ce = kFoldCV(Xt, Y, kernels, costM);
+
+disp('mean weighted classification error:');
+disp(ce);
+
+% choose best kernel
+bestKernel = 'rbf';
+
+% train the svm with the best kernel function on all training data
+svm = fitcsvm(Xt,Y,'Standardize',true,'KernelFunction',bestKernel,'Cost',costM);
+
+% cross validate and classifcation error
 cv = crossval(svm);
-kfoldLoss(cv)
+ce = kfoldLoss(cv,'lossfun','classiferror');
 
-% Predict training data
+disp('mean classification error:');
+disp(ce);
 
-[labels,Score] = predict(svm,Xt(:,1:end-1));
-CE = compCE(Xt(:,end),labels)
 
-% Predict validation data
-
+%% predict/test on validation set
 [labels,Score] = predict(svm,validation);
 
-% do kfold crossvalidation
-
-ind = crossvalind('Kfold', size(Xt,1), kfold);
-err = 0;
-% for i = 1:kfold
-%     Xts = Xt(ind == i, 1:end-1);
-%     Xtr = Xt(ind ~= i, 1:end-1);
-% 
-%     Gts = Xt(ind == i, end);
-%     Gtr = Xt(ind ~= i, end);
-% 
-%     %use some kernel ...
-%     % and train svm
-%     
-%     
-%     %test svm
-%     curerr = 0;
-%     
-%     err = err + curerr;
-% end
-
-
-%% test on validation set
-
-
-%% write to csv file for submission
+% write to csv file for submission
 csvwrite('data/validationsetresult.csv', labels);
 
 
-%% test on test set
+%% predict/test on test set
+%[labels] = predict(svm,validation);
 
-
-%% write to csv file for submission
-%csvwrite('testsetresult.csv', preddata);
+% write to csv file for submission
+%csvwrite('data/testsetresult.csv', labels);

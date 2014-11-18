@@ -3,10 +3,8 @@ function [ ce ] = compCE( T, P )
 % T = true labels
 % P = predicted labels
 
-ce = sum(((T==-1) & (P==1)) * 5) + sum((T==1) & (P==-1));
-
 % CE = (5 * |FP| + |FN|) / m
+ce = sum(((T==-1) & (P==1)) * 5) + sum((T==1) & (P==-1));
 ce = ce / length(T);
 
 end
-

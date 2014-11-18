@@ -1,9 +1,0 @@
-function [ ce ] = compCE( T, P )
-% Compute classification error,
-% T = true labels
-% P = predicted labels
-
-
-
-end
-
