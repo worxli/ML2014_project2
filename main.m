@@ -17,17 +17,20 @@ Y = training(:,end);
 % define kernel function
 % pass cost matrix
 % cross validation on/off
-kernels = 'rbf';
+kernels = {'linear' 'quadratic' 'polynomial' 'rbf' 'mlp'};
 costM = [0,5;1,0];
 
 
 %% for all kernel functions do cross validation,
 % choose the one with lowest classification error
 % ATTENTION: maybe it's better to use the built in crossval(svm) function - (I think it doesn't matter)
-ce = kFoldCV(Xt, Y, kernels, costM);
+for i = 1:length(kernels)
+    kernel = char(kernels(i));
+    ce = kFoldCV(Xt, Y, kernel, costM);
 
-disp('mean weighted classification error:');
-disp(ce);
+    disp('mean weighted classification error:');
+    disp(ce);
+end
 
 % choose best kernel
 bestKernel = 'rbf';
