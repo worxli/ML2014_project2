@@ -1,12 +1,12 @@
 function [ osvm ] = kernelCV(Xt, Y, kernel, costM)
 
     outlierFrac = 0:0.01:0.05;
-    errors = zeros(length(outlierFrac));
+    errors = [];
     c = cvpartition(length(Xt(:,1)),'KFold',10);
     svms = cell(length(outlierFrac));
     st = true;
     
-    parfor i = 1:length(outlierFrac)
+    for i = 1:length(outlierFrac)
         
         outFrac = outlierFrac(i);
         z = [];
@@ -30,12 +30,12 @@ function [ osvm ] = kernelCV(Xt, Y, kernel, costM)
         disp('mean classification error:');
         disp(ce);
         
-        errors(i) = ce;
+        errors = [errors ce];
         svms{i} = svm;
         
     end
     
-    [err, ind] = min(errors);
+    [err, ind] = min(errors)
     
     osvm = svms{ind};
 
