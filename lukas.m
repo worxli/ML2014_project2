@@ -23,7 +23,7 @@ kernel = 'rbf';
 costM = [0,5;1,0];
 
 
-%% for all kernel functions do cross validation,
+%% use 'rbf' kernel and train / tune it
 svm = kernelCV(Xt, Y, kernel, costM);
 
 

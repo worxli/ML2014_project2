@@ -18,34 +18,38 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \title{Machine Learning 2014: Project 2 - Classification Report}
-\author{member1@student.ethz.ch\\ member2@student.ethz.ch\\ member3@student.ethz.ch\\}
+\author{lukasbi@student.ethz.ch\\ ajenal@student.ethz.ch\\ harhans@student.ethz.ch\\}
 \date{\today}
 
 \begin{document}
 \maketitle
 
 \section*{Experimental Protocol}
-Suppose that someone wants to reproduce your results. Briefly describe the steps used to obtain the
-predictions starting from the raw data set downloaded from the project website. Use the following
-sections to explain your methodology. Feel free to add graphs or screenshots if you think it's
-necessary. The report should contain a maximum of 2 pages.
+%Suppose that someone wants to reproduce your results. Briefly describe the steps used to obtain the
+%predictions starting from the raw data set downloaded from the project website. Use the following
+%sections to explain your methodology. Feel free to add graphs or screenshots if you think it's
+%necessary. The report should contain a maximum of 2 pages.
 
 \section{Tools}
-Which tools and libraries have you used (e.g. Matlab, Python with scikit-learn, Java with Weka,
-SPSS, language x with library y, $\ldots$). If you have source-code (Matlab scripts, Python scripts, Java source folder, \dots),
-make sure to submit it on the project website together with this report. If you only used
-command-line or GUI-tools describe what you did.
+For this exercise we used mainly Matlab. All the statistic computation was performed with Matlab. 
 
 \section{Algorithm}
 Describe the algorithm you used for classification.
+% matlab integrated fitcsvm  
 
 \section{Features}
 Did you perform any preprocessing on the features? What feature transforms did you use?
 
+% rbf kernel
+
 \section{Parameters}
 How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)
 
+% outlier fraction, boxconstraints, kernelscale
+
 \section{Lessons Learned} What other algorithms did you try out that didn't work well?
 Why do you think they performed worse than what you used for your final submission?
+
+% e.g. linear and quadratic kernel ! %
 
 \end{document}
