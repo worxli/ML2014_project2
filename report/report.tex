@@ -31,24 +31,49 @@
 %necessary. The report should contain a maximum of 2 pages.
 
 \section{Tools}
-For this exercise we used mainly Matlab. All the statistic computation was performed with Matlab. 
+
+For this exercise we used mainly Matlab, because most students in our group were familiarized with the software. The core functions used - such as $fitcsvm()$ and $kfoldLoss()$-were built-in functions of the MATLAB library. 
+There was no other software used to get the results shown.
+
 
 \section{Algorithm}
-Describe the algorithm you used for classification.
-% matlab integrated fitcsvm  
+After reading the input files $training.csv$,$testing.csv$ and $validation.csv$, and separating the input from the output, we run a 10-fold cross validation over different kernels, namely:
+
+\begin{table}[h]
+
+\centering
+
+\begin{tabular}{l l}
+ 
+Linear Kernel: & $k(x,y) = x^Ty + c$ \\
+
+Polynomial Kernel: & $k(x,y) = (\alpha x^Ty + c)^d$ \\
+
+Gaussian (Radial Basis Function) Kernel: & $k(x,y) = exp(\frac{ ||x-y||^2}{2 \sigma ^2} )$ \\
+
+MLP kernel: & $k(x,y) = tanh( k x^T_ix+\theta)$
+
+\end{tabular}
+
+\end{table}
+
+The 10-fold cross validation runs with the method $fitcsvm$ to calculated the accumulation error. We chose the kernel with the smallest mean weighted classification error, to create our final support vector machine.
+Using this SVM and the validation data, we get our predicted labels.
 
 \section{Features}
-Did you perform any preprocessing on the features? What feature transforms did you use?
 
-% rbf kernel
+Due to the fact that the features were already within a window of $[-1,1]$, we did not use any normalization/preprocessing on them. After several experiments, the best kernel in most cases was the Gaussian Radial Basis Kernel, followed by the linear kernel. Important to mention is that the evaluation with the linear kernel is much faster than one with a non-linear kernel (like rbf or mlp). This might be a factor to consider depending on the final application of the algorithm.
 
 \section{Parameters}
 How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)
 
 % outlier fraction with minimal error and boxconstraints, kernelscale with fminsearch
 
-\section{Lessons Learned} What other algorithms did you try out that didn't work well?
-Why do you think they performed worse than what you used for your final submission?
+\section{Lessons Learned} 
+
+The different kernels delivered different results. It was expected to measure really high calculation times for polynomial kernels, but the poor results were quite surprising.
+We did not try other algorithms outside the SVMs.
+
 
 % e.g. linear and quadratic kernel ! %
 
