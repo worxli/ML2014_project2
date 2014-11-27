@@ -1,6 +1,7 @@
 \documentclass[a4paper, 11pt]{article}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{listings}
 \usepackage[pdftex]{hyperref}
 
 % Lengths and indenting
@@ -22,6 +23,7 @@
 \date{\today}
 
 \begin{document}
+\lstset{language=Matlab} 
 \maketitle
 
 \section*{Experimental Protocol}
@@ -33,7 +35,7 @@
 \section{Tools}
 
 For this exercise we used mainly Matlab, because most students in our group were familiarized with the software. The core functions used - such as $fitcsvm()$ and $kfoldLoss()$-were built-in functions of the MATLAB library. 
-There was no other software used to get the results shown.
+There was no other software used to get the shown results.
 
 
 \section{Algorithm}
@@ -65,10 +67,20 @@ Using this SVM and the validation data, we get our predicted labels.
 Due to the fact that the features were already within a window of $[-1,1]$, we did not use any normalization/preprocessing on them. After several experiments, the best kernel in most cases was the Gaussian Radial Basis Kernel, followed by the linear kernel. Important to mention is that the evaluation with the linear kernel is much faster than one with a non-linear kernel (like rbf or mlp). This might be a factor to consider depending on the final application of the algorithm.
 
 \section{Parameters}
-How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)
+In our model we were tuning the following parameters: outlier fraction, kernel scale and box constraint. The best value for the outlier fraction was determined by a cross validation over the SVM's with the different parameters. The best box constraint and the kernel scale values were searched with the MATLAB built in function $fminsearch()$.
+There we fixed our SVM kernel to Gaussian and run the search with respect to a 10-fold cross validation. 
 
-% outlier fraction with minimal error and boxconstraints, kernelscale with fminsearch
-% Parameters for plynomial, rbf and mlp lernel?
+\begin{lstlisting}frame=single]
+	 % tune the svm with the specified kernel function
+	 minfn = @(z)kfoldLoss(fitcsvm(Xt,Y,'CVPartition',c,...
+		 'KernelFunction',kernel,'BoxConstraint',exp(z(2)),...
+		 'Standardize', st 'KernelScale',exp(z(1))));
+	 
+	 %find best parameters "kernelscale" and "boxconstraint"   
+	 opts = optimset('TolX',5e-4,'TolFun',5e-4);
+	 [searchmin fval] = fminsearch(minfn,randn(2,1),opts);
+\end{lstlisting}
+
 \section{Lessons Learned} 
 
 The different kernels delivered different results. It was expected to measure really high calculation times for polynomial kernels, but the poor results were quite surprising.
